@@ -19,5 +19,5 @@ def decomposition(array) :
 
     res_partiel = np.concatenate([x_array, y_array])
 
-    return res
+    return res_partiel
 
