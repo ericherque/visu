@@ -4,18 +4,19 @@ import numpy as np
 import math
 
 def decomposition(array) :
-    x_array = np.array([])
-    y_array = np.array([])
+    x_array = []
+    y_array = []
     size = len(array)
 
     for index in range(0, size):
         # x_i^n value
         value = 1/4 * ( (-array[((2*index)-2)%size] + 3*array[(2*index-1)%size] + 3*array[(2*index)%size] - array[((2*index)+1)%size] ))
-        x_array = np.vstack((x_array, value))
+        x_array.append([value[0],value[1]])
 
         # y_i^n value
         value = 1/4 * ( (array[((2*index)-2)%size] - 3*array[(2*index-1)%size] + 3*array[(2*index)%size] - array[((2*index)+1)%size] ))
-        y_array = np.append(y_array, value)
+        y_array.append([value[0],value[1]])
+
 
     res = np.concatenate([x_array, y_array])
     return res
@@ -26,6 +27,8 @@ def affichage(tab):
     ax.add_patch(Polygon(tab[0:len(tab),:], fill=False, closed=True))
     plt.axis([0, 15, 0, 15])
     plt.show()
+
+
 
 def deconcatenation_x_y(tab):
     size = len(tab)
@@ -40,8 +43,13 @@ def deconcatenation_x_y(tab):
 
 def main() :
     herisson = np.loadtxt("herisson512.d")
-    decomp_herisson = np.array(deconcatenation_x_y(decomposition(herisson)))
+    decomp_herisson = decomposition(herisson)
+    decomp_herisson2 = decomposition(decomp_herisson)
+    decomp_herisson3 = decomposition(decomp_herisson2)
+    np_decomp_herisson = np.array(decomp_herisson)
     affichage(herisson)
-    affichage(decomp_herisson)
+    affichage(decomp_herisson[0:len(decomp_herisson)//2])
+    affichage(decomp_herisson2[0:len(decomp_herisson)//4])
+    affichage(decomp_herisson3[0:len(decomp_herisson)//8])
 
 main()
