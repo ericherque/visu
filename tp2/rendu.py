@@ -30,6 +30,13 @@ def decompose(x):
                 x[int(np.mod((2*i-1), k))] + 3*x[2*i] - x[2*i+1]) / 4
     return x_moy, y
 
+def decompose_totale(x,n):
+    if n != 0 :
+        x1,y1 = decompose(x)
+        return decompose_totale(x1,n-1)
+    else :
+        return x
+
 
 def affichage(tab):
     fig = plt.figure()
@@ -40,16 +47,6 @@ def affichage(tab):
 
 def main() :
     herisson = np.loadtxt("herisson512.d")
-    # decomp_herisson = decomposition(herisson)
-    # decomp_herisson2 = decomposition(decomp_herisson)
-    # decomp_herisson3 = decomposition(decomp_herisson2)
-    # decomp_herisson4 = decomposition(decomp_herisson3)
-    # decomp_herisson5 = decomposition(decomp_herisson4)
-    # np_decomp_herisson = np.array(decomp_herisson)
-    # affichage(herisson)
-    # affichage(decomp_herisson[0:(len(decomp_herisson))//2])
-    # affichage(decomp_herisson2[0:(len(decomp_herisson2))//4])
-    # affichage(decomp_herisson3[0:(len(decomp_herisson3))//8])
     x1, y1 = decompose(herisson)
     x2, y2 = decompose(x1)
     x3, y3 = decompose(x2)
@@ -57,5 +54,6 @@ def main() :
     affichage(x1)
     affichage(x2)
     affichage(x3)
+    affichage(decompose_totale(herisson,5))
 
 main()
