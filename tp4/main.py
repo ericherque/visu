@@ -118,14 +118,15 @@ for i in range(0, len(X)*10):
 # calculée pour le point X[i,j], Y[i,j]
 #
 F_array = np.zeros([10, 10], dtype = float)
+
 print("Début du calcul...")
+
 for i in range(len(X)):
 	F_subarray = np.empty(10, dtype = 'float64')
 	for j in range(len(Y)):
 		F = shepard(X[i,j], Y[i,j], X, Y, Zf, mu_test)
-		#print("i: ", i, "y: ", j, "Z: ", Zf[i,j], "F: ", F) 
 		F_array[i,j] = F
-	#print("F: ", F_array)
+
 	print("Chargement: ", 10*(i+1), "%...")
 print("Fin du calcul.")
 
