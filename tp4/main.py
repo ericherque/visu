@@ -41,16 +41,9 @@ def numerator_calcul(x, y, X, Y, i, mu):
 ## X = tableau des x
 ## Y = tableau des y
 ## i = l'indice i de Wi
-## mu = tableau des valeurs mu
-def denominator_calcul(x, y, X, Y, i, mu):
+## mu = pour l'instant on met une valeur fixe
+def denominator_calcul(x, y, X, Y, i, mu, X_array, Y_array):
 	res = 0
-	X_array = []
-	Y_array = []
-	#init des tab de X et Y
-	for (tabX, tabY) in zip(X, Y):
-		for (eltX, eltY) in zip(tabX, tabY):
-			X_array.append(eltX)
-			Y_array.append(eltY)
 	#calcul du dénominateur
 	for j in range(0, len(X_array)):
 		mult_inter = 1
@@ -61,10 +54,21 @@ def denominator_calcul(x, y, X, Y, i, mu):
 		res += mult_inter
 	return res
 
-## calcul du poids Wi
-def pointweight(x, y, X, Y, i, mu):
+# initialisation de X_array et Y_array
+def init_tab_x_y(X, Y):
+	#init des tab de X et Y
+	X_array = []
+	Y_array = []
+	for (tabX, tabY) in zip(X, Y):
+		for (eltX, eltY) in zip(tabX, tabY):
+			X_array.append(eltX)
+			Y_array.append(eltY)
+	return (X_array, Y_array)
+
+## fonction retournant le calcul de Wi
+def pointweight(x, y, X, Y, i, mu, X_array, Y_array):
 	numerator = numerator_calcul(x, y, X, Y, i, mu)
-	denominator = denominator_calcul(x, y, X, Y, i, mu)
+	denominator = denominator_calcul(x, y, X, Y, i, mu, X_array, Y_array)
 	return numerator/denominator
 
 ## fonction évaluant  un point (x,y) donné
@@ -80,8 +84,9 @@ def shepard(x, y, X, Y, values, mu):
 			Z_array.append(eltZ)
 
 	## on calcule Wi, puis on le multiplie à la valeur fi (Z[i])
+	(X_array, Y_array) = init_tab_x_y(X, Y)
 	for i in range(0, len(Z_array)):
-		w = pointweight(x, y, X, Y, i, mu)
+		w = pointweight(x, y, X, Y, i, mu, X_array, Y_array)
 		w *= Z_array[i]
 		F += w
 	return F
@@ -115,6 +120,7 @@ for i in range(0, len(X)*10):
 F_array = np.zeros([10, 10], dtype = float)
 print("Début du calcul...")
 for i in range(len(X)):
+	F_subarray = np.empty(10, dtype = 'float64')
 	for j in range(len(Y)):
 		F = shepard(X[i,j], Y[i,j], X, Y, Zf, mu_test)
 		#print("i: ", i, "y: ", j, "Z: ", Zf[i,j], "F: ", F) 
