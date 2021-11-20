@@ -34,7 +34,6 @@ def numerator_calcul(x, y, X, Y, i, mu):
 ## mu = pour l'instant on met une valeur fixe
 def denominator_calcul(x, y, X, Y, i, mu):
 	res = 0
-	mult_inter = 1
 	X_array = []
 	Y_array = []
 	#init des tab de X et Y
@@ -44,6 +43,7 @@ def denominator_calcul(x, y, X, Y, i, mu):
 			Y_array.append(eltY)
 	#calcul du dénominateur
 	for j in range(0, len(X_array)-1):
+		mult_inter = 1
 		for k in range(0, len(X_array)-1):
 				if j!=k:
 					mult_inter *= pow(distance2(x, X_array[k], y, Y_array[k]), mu)
@@ -89,7 +89,7 @@ x_random = 2
 y_random = 7
 F = shepard(x_random, y_random, X, Y, Zf, 2)
 print(F)
-print(Zf)
+#print(Zf)
 #
 #
 fig = plt.figure()
