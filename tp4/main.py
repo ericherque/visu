@@ -42,7 +42,7 @@ def denominator_calcul(x, y, X, Y, i, mu, X_array, Y_array):
 		for k in range(0, len(X_array)):
 				if j!=k:
 					mult_inter *= pow(distance2(x, X_array[k], y, Y_array[k]), mu)
-			
+
 		res += mult_inter
 	return res
 
@@ -92,14 +92,14 @@ Zf = np.cos(X/2.) * np.sin(X**2 + Y)
 x_random = 2
 y_random = 7
 print(Zf)
-F_array = np.array([])
+F_array = np.empty((10,10),dtype = 'float64')
 for i in range(len(X)):
-	F_subarray = np.array([])
+	F_subarray = np.empty(10, dtype = 'float64')
 	for j in range(len(Y)):
 		F = shepard(X[i,j], Y[i,j], X, Y, Zf, 2)
-		print("i: ", i, "y: ", j, "Z: ", Zf[i,j], "F: ", F) 
-		np.append(F_subarray, F)
-	np.append(F_array, F_subarray)
+		print("i: ", i, "y: ", j, "Z: ", Zf[i,j], "F: ", F)
+		F_subarray[j] = F
+	F_array[i] = F_subarray
 
 print(F_array)
 #print(Zf)
