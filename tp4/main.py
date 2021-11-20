@@ -91,18 +91,17 @@ Zf = np.cos(X/2.) * np.sin(X**2 + Y)
 #
 x_random = 2
 y_random = 7
-
-F_array = []
+print(Zf)
+F_array = np.array([])
 for i in range(len(X)):
-	F_subarray = []
+	F_subarray = np.array([])
 	for j in range(len(Y)):
 		F = shepard(X[i,j], Y[i,j], X, Y, Zf, 2)
 		print("i: ", i, "y: ", j, "Z: ", Zf[i,j], "F: ", F) 
-		F_subarray.append(F)
-	F_array.append(F_subarray)
+		np.append(F_subarray, F)
+	np.append(F_array, F_subarray)
 
-F = shepard(x_random, y_random, X, Y, Zf, 2)
-print(F)
+print(F_array)
 #print(Zf)
 #
 #
@@ -114,7 +113,7 @@ ax = fig.add_subplot(111, projection='3d')
 
 # Plot a basic wireframe.
 ax.plot_wireframe(X, Y, Zf, rstride=2, cstride=1)
-ax.plot_wireframe(X, Y, F, rstride=1, cstride=1, color="r")
+ax.plot_wireframe(X, Y, F_array, rstride=1, cstride=1, color="r")
 ax.scatter( [0.2, 0.8, 0.1],[0.3, 0.5, 0.7],[0.5, 0.5, 0.5], marker="^")
 
 ax.set_xlabel('X axis')
