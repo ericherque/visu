@@ -91,7 +91,7 @@ mu_test = np.zeros(len(X)*10)
 for i in range(0, len(X)*10):
 	if i %3 == 0 :
 		mu_test[i] =1
-	if i %3 == 1 :
+	elif i %3 == 1 :
 		mu_test[i] =2
 	else :
 		mu_test[i] =3
