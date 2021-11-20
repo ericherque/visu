@@ -32,15 +32,10 @@ def numerator_calcul(x, y, X, Y, i, mu):
 ## Y = tableau des y
 ## i = l'indice i de Wi
 ## mu = pour l'instant on met une valeur fixe
-def denominator_calcul(x, y, X, Y, i, mu):
+def denominator_calcul(x, y, X, Y, i, mu, X_array, Y_array):
 	res = 0
-	X_array = []
-	Y_array = []
-	#init des tab de X et Y
-	for (tabX, tabY) in zip(X, Y):
-		for (eltX, eltY) in zip(tabX, tabY):
-			X_array.append(eltX)
-			Y_array.append(eltY)
+	#X_array = []
+	#Y_array = []
 	#calcul du dénominateur
 	for j in range(0, len(X_array)):
 		mult_inter = 1
@@ -51,12 +46,21 @@ def denominator_calcul(x, y, X, Y, i, mu):
 		res += mult_inter
 	return res
 
+def init_tab_x_y(X, Y):
+	#init des tab de X et Y
+	X_array = []
+	Y_array = []
+	for (tabX, tabY) in zip(X, Y):
+		for (eltX, eltY) in zip(tabX, tabY):
+			X_array.append(eltX)
+			Y_array.append(eltY)
+	return (X_array, Y_array)
 
-def pointweight(x, y, X, Y, i, mu):
+def pointweight(x, y, X, Y, i, mu, X_array, Y_array):
 	##calcul du Wi
 	numerator = numerator_calcul(x, y, X, Y, i, mu)
 	#print(numerator)
-	denominator = denominator_calcul(x, y, X, Y, i, mu)
+	denominator = denominator_calcul(x, y, X, Y, i, mu, X_array, Y_array)
 	return numerator/denominator
 
 
@@ -68,9 +72,9 @@ def shepard(x, y, X, Y, values, mu):
 	for tab in values:
 		for eltZ in tab:
 			Z_array.append(eltZ)
-
+	(X_array, Y_array) = init_tab_x_y(X, Y)
 	for i in range(0, len(Z_array)):
-		w = pointweight(x, y, X, Y, i, mu)
+		w = pointweight(x, y, X, Y, i, mu, X_array, Y_array)
 		w *= Z_array[i]
 		F += w
 	return F
@@ -97,12 +101,12 @@ for i in range(0, len(X)*10):
 		mu_test[i] =3
 
 for i in range(len(X)):
+	F_subarray = np.empty(10, dtype = 'float64')
 	for j in range(len(Y)):
 		F = shepard(X[i,j], Y[i,j], X, Y, Zf, mu_test)
 		print("i: ", i, "y: ", j, "Z: ", Zf[i,j], "F: ", F)
 
-F = shepard(x_random, y_random, X, Y, Zf, 2)
-print(F)
+print(F_array)
 #print(Zf)
 #
 #
@@ -114,6 +118,7 @@ ax = fig.add_subplot(111, projection='3d')
 
 # Plot a basic wireframe.
 ax.plot_wireframe(X, Y, Zf, rstride=2, cstride=1)
+ax.plot_wireframe(X, Y, F_array, rstride=1, cstride=1, color="r")
 ax.scatter( [0.2, 0.8, 0.1],[0.3, 0.5, 0.7],[0.5, 0.5, 0.5], marker="^")
 
 ax.set_xlabel('X axis')
