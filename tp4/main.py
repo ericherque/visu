@@ -23,7 +23,7 @@ def numerator_calcul(x, y, X, Y, i, mu):
 		for (eltX, eltY) in zip(tabX, tabY):
 			if index != i:
 				res *= pow(distance2(x, eltX, y, eltY), mu)
-				index += 1
+			index += 1
 	return res
 
 
@@ -42,9 +42,9 @@ def denominator_calcul(x, y, X, Y, i, mu):
 			X_array.append(eltX)
 			Y_array.append(eltY)
 	#calcul du dénominateur
-	for j in range(0, len(X_array)-1):
+	for j in range(0, len(X_array)):
 		mult_inter = 1
-		for k in range(0, len(X_array)-1):
+		for k in range(0, len(X_array)):
 				if j!=k:
 					mult_inter *= pow(distance2(x, X_array[k], y, Y_array[k]), mu)
 			
@@ -55,7 +55,7 @@ def denominator_calcul(x, y, X, Y, i, mu):
 def pointweight(x, y, X, Y, i, mu):
 	##calcul du Wi
 	numerator = numerator_calcul(x, y, X, Y, i, mu)
-	print(numerator)
+	#print(numerator)
 	denominator = denominator_calcul(x, y, X, Y, i, mu)
 	return numerator/denominator
 
@@ -69,7 +69,7 @@ def shepard(x, y, X, Y, values, mu):
 		for eltZ in tab:
 			Z_array.append(eltZ)
 
-	for i in range(0, len(Z_array)-1):
+	for i in range(0, len(Z_array)):
 		w = pointweight(x, y, X, Y, i, mu)
 		w *= Z_array[i]
 		F += w
@@ -87,6 +87,11 @@ Zf = np.cos(X/2.) * np.sin(X**2 + Y)
 #
 x_random = 2
 y_random = 7
+for i in range(len(X)):
+	for j in range(len(Y)):
+		F = shepard(X[i,j], Y[i,j], X, Y, Zf, 2)
+		print("i: ", i, "y: ", j, "Z: ", Zf[i,j], "F: ", F) 
+
 F = shepard(x_random, y_random, X, Y, Zf, 2)
 print(F)
 #print(Zf)
