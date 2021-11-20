@@ -22,7 +22,7 @@ def numerator_calcul(x, y, X, Y, i, mu):
 	for (tabX, tabY) in zip(X, Y):
 		for (eltX, eltY) in zip(tabX, tabY):
 			if index != i:
-				res *= pow(distance2(x, eltX, y, eltY), mu)
+				res *= pow(distance2(x, eltX, y, eltY), mu[index])
 			index += 1
 	return res
 
@@ -41,7 +41,7 @@ def denominator_calcul(x, y, X, Y, i, mu, X_array, Y_array):
 		mult_inter = 1
 		for k in range(0, len(X_array)):
 				if j!=k:
-					mult_inter *= pow(distance2(x, X_array[k], y, Y_array[k]), mu)
+					mult_inter *= pow(distance2(x, X_array[k], y, Y_array[k]), mu[j])
 
 		res += mult_inter
 	return res
@@ -92,11 +92,20 @@ Zf = np.cos(X/2.) * np.sin(X**2 + Y)
 x_random = 2
 y_random = 7
 print(Zf)
+mu_test = np.zeros(len(X)*10)
+for i in range(0, len(X)*10):
+	if i %3 == 0 :
+		mu_test[i] =1
+	elif i %3 == 1 :
+		mu_test[i] =2
+	else :
+		mu_test[i] =3
+
 F_array = np.empty((10,10),dtype = 'float64')
 for i in range(len(X)):
 	F_subarray = np.empty(10, dtype = 'float64')
 	for j in range(len(Y)):
-		F = shepard(X[i,j], Y[i,j], X, Y, Zf, 2)
+		F = shepard(X[i,j], Y[i,j], X, Y, Zf, mu_test)
 		print("i: ", i, "y: ", j, "Z: ", Zf[i,j], "F: ", F)
 		F_subarray[j] = F
 	F_array[i] = F_subarray
