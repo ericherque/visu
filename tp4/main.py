@@ -23,6 +23,7 @@ def numerator_calcul(x, y, X, Y, i, mu):
 		for (eltX, eltY) in zip(tabX, tabY):
 			if index != i:
 				res *= pow(distance2(x, eltX, y, eltY), mu)
+				index += 1
 	return res
 
 
@@ -88,6 +89,7 @@ x_random = 2
 y_random = 7
 F = shepard(x_random, y_random, X, Y, Zf, 2)
 print(F)
+print(Zf)
 #
 #
 fig = plt.figure()
